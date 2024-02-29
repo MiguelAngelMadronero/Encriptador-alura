@@ -19,12 +19,31 @@ const matriz_code=[
 
 ];
 
+ function limpiarMensaje() {
+  // Limpiar el mensaje si el usuario hace clic en el área de texto
+  campo_texto.value = "";
+
+  campo_texto.removeEventListener('click', limpiarMensaje);
+  campo_texto.removeEventListener('keypress', limpiarMensaje);
+};
+
+
 
 function btnEncriptar(){
-  const texto= campo_texto.value.toLowerCase();
+  const texto= campo_texto.value;
   // console.log(texto);
   // encriptar(texto);
   // console.log(encriptar(texto))
+  if (/[A-Z!@#$%^&*()_+={}\[\]:;"'|\\<,>.?/]/.test(texto)) {
+    campo_texto.value = "No se puede encriptar el texto porque contiene mayúsculas o símbolos.";
+    campo_texto.addEventListener('click', limpiarMensaje);
+    campo_texto.addEventListener('keypress', limpiarMensaje);
+
+
+    return;// Detener la función si se encuentran mayúsculas o símbolos
+  }
+
+
   campo_mensaje.value= encriptar(texto);
   // console.log(campo_mensaje.value)
   elementoOculto.style.display='block';
@@ -34,6 +53,12 @@ function btnEncriptar(){
   ocultarElemento2.style.display='none';
   console.log(campo_mensaje.value)
 }
+
+campo_mensaje.addEventListener("click", function() {
+  // Limpiar el mensaje si el usuario hace clic en el área de texto
+  campo_mensaje.value = "";
+});
+
 
 campo_texto.addEventListener("keypress", function(event) {
   // Verificar si la tecla presionada es Enter (código 13)
